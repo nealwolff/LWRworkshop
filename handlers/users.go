@@ -47,7 +47,8 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		userLoan := user.Loan[LoanID]
 		asched := userLoan.CalculateASchedule()
 
-		json.NewEncoder(w).Encode(asched)
+		aschedRaw, _ := json.MarshalIndent(asched, "", "   ")
+		w.Write(aschedRaw)
 
 	}
 }
