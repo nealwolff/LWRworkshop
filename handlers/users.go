@@ -5,6 +5,8 @@ import (
 	"LWRworkshop/types"
 	"encoding/json"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 //UserHandler handels the user endpoint
@@ -26,6 +28,26 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(ret)
+
+	}
+
+	if r.Method == http.MethodGet {
+		params := mux.Vars(r)
+		ID := params["id"]
+		LoanID := params["loanId"]
+
+		rawUser, err := crud.GetOne("users", ID, w)
+		if err != nil {
+			return
+		}
+
+		user := types.User{}
+		json.Unmarshal(rawUser, &user)
+
+		userLoan := user.Loan[LoanID]
+		asched := userLoan.CalculateASchedule()
+
+		json.NewEncoder(w).Encode(asched)
 
 	}
 }

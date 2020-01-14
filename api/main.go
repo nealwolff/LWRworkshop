@@ -13,6 +13,7 @@ func main() {
 
 	theRouter.HandleFunc("/route", handlers.Route).Methods(http.MethodGet)
 	theRouter.HandleFunc("/user", handlers.UserHandler).Methods(http.MethodPost, http.MethodGet)
+	theRouter.HandleFunc("/user/{id}/loan/{loanId}", handlers.UserHandler).Methods(http.MethodGet)
 
 	log.Println("The Api is listening")
 
